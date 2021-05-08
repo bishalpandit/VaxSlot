@@ -11,21 +11,20 @@ app.use(express.static("public"));
 app.use(bodyParser.urlencoded({extended: true}));
 
 
-app.get("/", (req, res) => {
+app.get("/", function(req, res) {
 
   res.render("home");
     
 });
 
-app.post("/result", (req, res) => {
+app.post("/result", function(req, res) {
 
     const pin = req.body.pin;
 
-    const url = "https://cdn-api.co-vin.in/api/v2/appointment/sessions/public/calendarByPin?pincode=" + pin + "&date=07-05-2021";
+    const url = "https://cdn-api.co-vin.in/api/v2/appointment/sessions/public/calendarByPin?pincode=" + pin + "&date=08-05-2021";
 
-    https.get(url, (resp) => {
+    https.get(url, function(resp) {
 
-        console.log(resp.statusCode);
 
         resp.on("data", function(data) {
 
@@ -33,21 +32,18 @@ app.post("/result", (req, res) => {
 
             const Centers = vaccineInfo.centers;
 
-
             res.render("result", {
 
                     centers : Centers
-            })
-                
+            });
+                         
+        });
+    });
 
-          
-        })
-    })
-
-})
+});
 
 
-app.listen(process.env.PORT || 3000, () => {
+app.listen(process.env.PORT || 3000, function() {
 
     console.log("Server up and running...");
 })
