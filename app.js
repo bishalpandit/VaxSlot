@@ -30,11 +30,11 @@ app.post("/result", function(req, res) {
 
             const vaccineInfo = JSON.parse(data);
 
-            const Centers = vaccineInfo.centers;
+            const Centers = vaccineInfo;
 
             res.render("result", {
 
-                    centers : Centers
+                    vaccine : Centers
             });
                          
         });
