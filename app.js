@@ -17,7 +17,7 @@ app.get("/", function(req, res) {
     
 });
 
-app.post("/result", function(req, res) {
+app.post("/", function(req, res) {
 
     const pin = req.body.pin;
 
