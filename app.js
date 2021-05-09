@@ -3,6 +3,7 @@ const express = require("express");
 const https = require("https");
 const bodyParser = require("body-parser");
 const ejs = require("ejs");
+const fetch = require("node-fetch");
 
 const app = express();
 
@@ -21,16 +22,33 @@ app.post("/", function(req, res) {
 
     const pin = req.body.pin;
 
-    const url = "https://cdn-api.co-vin.in/api/v2/appointment/sessions/public/calendarByPin?pincode=700064&date=08-05-2021";
+    var y = new Date().getFullYear();
+    var m = new Date().getMonth() + 1;
+    var d = new Date().getDate();
+    var date = "0" + d + "-0" + m + "-" + y;
+
+    
+
+    const url = "https://cdn-api.co-vin.in/api/v2/appointment/sessions/public/calendarByPin?pincode=" + pin + "&date="+ date + "";
 
     https.get(url, resp => {
 
-    let data = "";
+    let data;
 
     // A chunk of data has been recieved.
     resp.on("data", chunk => {
-      data += chunk;
-    });
+
+      if(!data) {
+
+        data = chunk;
+      }
+
+      else {
+
+        data += chunk;
+      }
+      
+    })
 
     // The whole response has been received. Print out the result.
     resp.on("end", () => {
