@@ -4,6 +4,7 @@ const https = require("https");
 const bodyParser = require("body-parser");
 const ejs = require("ejs");
 const fetch = require("node-fetch");
+const { response } = require("express");
 
 const app = express();
 
@@ -18,7 +19,7 @@ app.get("/", function(req, res) {
     
 });
 
-app.post("/", function(req, res) {
+app.post("/result", function(req, res) {
 
     const pin = req.body.pin;
 
@@ -27,42 +28,21 @@ app.post("/", function(req, res) {
     var d = new Date().getDate();
     var date = "0" + d + "-0" + m + "-" + y;
 
-    
+    const url = "http://api.openweathermap.org/data/2.5/weather?q=" + pin + "&appid=c7d37383f37163c9f9f3e77ce2bccde7&units=metric";
 
-    const url = "https://cdn-api.co-vin.in/api/v2/appointment/sessions/public/calendarByPin?pincode=" + pin + "&date="+ date + "";
+   fetch(url).then( async (response) => {
 
-    https.get(url, resp => {
+        const weather = await response.json();
 
-    let data;
-
-    // A chunk of data has been recieved.
-    resp.on("data", chunk => {
-
-      if(!data) {
-
-        data = chunk;
-      }
-
-      else {
-
-        data += chunk;
-      }
-      
-    })
-
-    // The whole response has been received. Print out the result.
-    resp.on("end", () => {
-
-      let vaccine = JSON.parse(data);
-      
         res.render("result", {
 
-            vaccine : vaccine
+            w : weather
         })
 
-    })
+   }).catch( (err) => {
 
- })
+        console.log(err);
+   })
 
 });
 
