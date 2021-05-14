@@ -3,8 +3,6 @@ const express = require("express");
 const https = require("https");
 const bodyParser = require("body-parser");
 const ejs = require("ejs");
-const fetch = require("node-fetch");
-const { response } = require("express");
 
 const app = express();
 
@@ -23,26 +21,24 @@ app.post("/result", function(req, res) {
 
     const pin = req.body.pin;
 
-    var y = new Date().getFullYear();
-    var m = new Date().getMonth() + 1;
-    var d = new Date().getDate();
-    var date = "0" + d + "-0" + m + "-" + y;
+    const url = "https://cdn-api.co-vin.in/api/v2/appointment/sessions/public/calendarByPin?pincode=" + pin + "&date=08-05-2021";
 
-    const url = "http://api.openweathermap.org/data/2.5/weather?q=" + pin + "&appid=c7d37383f37163c9f9f3e77ce2bccde7&units=metric";
+    https.get(url, function(resp) {
 
-   fetch(url).then( async (response) => {
 
-        const weather = await response.json();
+        resp.on("data", function(data) {
 
-        res.render("result", {
+            const vaccineInfo =  JSON.parse(data);
 
-            w : weather
-        })
+            const Centers = vaccineInfo;
 
-   }).catch( (err) => {
+            res.render("result", {
 
-        console.log(err);
-   })
+                    vaccine : Centers
+            });
+                         
+        });
+    });
 
 });
 
@@ -51,4 +47,3 @@ app.listen(process.env.PORT || 3000, function() {
 
     console.log("Server up and running...");
 })
-
