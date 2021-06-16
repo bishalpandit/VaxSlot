@@ -21,7 +21,7 @@ app.post("/result", function(req, res) {
 
     const pin = req.body.pin;
 
-    const url = "https://cdn-api.co-vin.in/api/v2/appointment/sessions/public/calendarByPin?pincode=" + pin + "&date=08-05-2021";
+    const url = "https://cdn-api.co-vin.in/api/v2/appointment/sessions/public/calendarByPin?pincode=" + pin + "&date=15-06-2021";
 
     https.get(url, function(resp) {
 
